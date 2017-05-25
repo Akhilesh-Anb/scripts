@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+j=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/staged/products/") 
+p=$(jq -r '.[].guid' <<< $j)
+
+read -a products <<< $p
+endpoint=(resources properties networks_and_azs)
+id=0
+
+for prod in "${products[@]}"
+do
+   echo $id - $prod
+   let id=id+1
+done
+
+echo -n "choose product you want to review from above list starting at 0: "
+read num
+
+id=0
+
+for end in "${endpoint[@]}"
+do 
+  echo $id - $end
+  let id=id+1
+done
+
+echo -n "choose endpoint to investigate [resouce properties networks_and_azs] starting at 0 : "
+read ed
+
+echo "${products[$num]}"
+om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/staged/products/"${products[$num]}"/"${endpoint[$ed]}""
