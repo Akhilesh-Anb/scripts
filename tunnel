@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ -z "$INNER_JUMPBOX_IP" ]; then
+  echo "Missing env var. ?"
+  exit 1
+fi
+
+set -evx
+
+# login to the outer jumpbox and wait 2 seconds for a sshuttle to start using the tunnel
+ssh -M -s $INNER_JUMPBOX_IP -fnNT -L 5000:localhost:$INNER_JUMPBOX_PORT $USER@$INNER_JUMPBOX_IP &
+ssh -S $INNER_JUMPBOX_IP -O check $USER@$INNER_JUMPBOX_IP >> pid
