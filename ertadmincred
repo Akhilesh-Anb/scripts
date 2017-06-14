@@ -31,7 +31,7 @@ read -a creds <<< $cf
 
 userid=0
 #echo ${creds[$userid]}
-u=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/deployed/products/cf-ed94e9133df42fc146ab/credentials/"${creds[$userid]}"")
+u=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/deployed/products/$p/credentials/"${creds[$userid]}"")
 ui=$(jq -r ".credential.value.identity" <<< $u)
 pui=$(jq -r ".credential.value.password" <<< $u)
 
