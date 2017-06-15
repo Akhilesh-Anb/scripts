@@ -1,5 +1,7 @@
 Scripts to interact with PCF opsmanager. 
-
+Requires following software be installed on the system:
+  - jq
+  - om cli
 Specifically at this point to grab credentials and look at json output for tiles that are installed. Mainly useful for automation
 pipelines. 
 
