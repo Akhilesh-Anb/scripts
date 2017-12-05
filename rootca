@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+
+j=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR  -p $OPSPW curl -s -p "/api/v0/security/root_ca_certificate") &> /dev/null
+cert=$(jq -r '.root_ca_certificate_pem' <<< $j)
+
+echo "$cert" >> root_ca_pem
+echo root_ca_pem created

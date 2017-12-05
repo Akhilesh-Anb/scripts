@@ -1,0 +1,38 @@
+#!/bin/bash -e
+j=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/staged/products/")
+p=$(jq -r '.[].guid' <<< $j | grep -iw "cf-*")
+
+c=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/deployed/products/$p/credentials")
+cf=$(jq -r ".credentials[]" <<< $c | grep ".uaa.admin_client_credentials")
+
+#echo -n "show all ert user ids or only uaa admin ids 1 for admin only 2 for all:"
+#read admin
+#
+#if [ $admin -eq 1 ]
+#then
+# cf=$(jq -r ".credentials[]" <<< $c | grep ".uaa.admin*")
+#else
+# cf=$(jq -r ".credentials[]" <<< $c)
+#fi
+
+
+read -a creds <<< $cf
+
+#id=0
+#for cred in "${creds[@]}"
+#do
+#  echo $id - $cred
+#  let id=id+1
+#done
+
+#echo -n "choice userid and pw you would like to retrieve starting with 0 :"
+#read userid
+
+userid=0
+#echo ${creds[$userid]}
+u=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/deployed/products/$p/credentials/"${creds[$userid]}"")
+ui=$(jq -r ".credential.value.identity" <<< $u)
+pui=$(jq -r ".credential.value.password" <<< $u)
+
+echo $ui
+echo $pui

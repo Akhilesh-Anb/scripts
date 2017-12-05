@@ -1,0 +1,26 @@
+#!/bin/bash -e
+c=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/deployed/director/credentials")
+cf=$(jq -r ".credential_ids[]" <<< $c | grep "uaa_login_client_credentials")
+
+
+#echo -n "show all ert user ids or only uaa admin ids 1 for admin only 2 for all:"
+#read admin
+#
+#if [ $admin -eq 1 ]
+#then
+# cf=$(jq -r ".credentials[]" <<< $c | grep ".uaa.admin*")
+#else
+# cf=$(jq -r ".credentials[]" <<< $c)
+#fi
+
+
+read -a creds <<< $cf
+
+userid=0
+#echo ${creds[$userid]}
+u=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/deployed/director/credentials/"${creds[$userid]}"")
+ui=$(jq -r ".credential.value.identity" <<< $u)
+pui=$(jq -r ".credential.value.password" <<< $u)
+
+echo $ui
+echo $pui
