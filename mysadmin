@@ -3,7 +3,7 @@ j=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0
 p=$(jq -r '.[].guid' <<< $j | grep -iw "cf-*")
 
 
-c=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/deployed/products/cf-1e799ca2600787eaa95f/variables?name=mysql-admin-credentials")
+c=$(om -t https://$OPS_MGR_HOST -k -u $OPS_MGR_USR -p $OPSPW curl -s -p "/api/v0/deployed/products/$p/variables?name=mysql-admin-credentials")
 cf=$(jq -r ".[]" <<< $c )
 
 #echo -n "show all ert user ids or only uaa admin ids 1 for admin only 2 for all:"
