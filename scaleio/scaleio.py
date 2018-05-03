@@ -41,14 +41,14 @@ thickc=capacity['System']['thickCapacityInUseInKb']
 thinc=capacity['System']['thinCapacityInUseInKb']
 unusedc=capacity['System']['unusedCapacityInKb']
 
-print availc
-print usedc
-print totalc
-print protc
-print sparec
-print thickc
-print thinc
-print unusedc
+#print availc
+#print usedc
+#print totalc
+#print protc
+#print sparec
+#print thickc
+#print thinc
+#print unusedc
 
 
 
